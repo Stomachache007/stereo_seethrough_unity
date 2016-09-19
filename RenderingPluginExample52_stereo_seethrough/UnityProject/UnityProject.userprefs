@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\shaders\rectifyRight.shader">
+    <Files>
+      <File FileName="Assets\UseRenderingPlugin.cs" Line="167" Column="39" />
+      <File FileName="Assets\shaders\rectify.shader" Line="36" Column="5" />
+      <File FileName="Assets\shaders\rectifyRight.shader" Line="37" Column="10" />
+      <File FileName="Assets\UseRenderingPlugin_right.cs" Line="131" Column="39" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
