@@ -162,7 +162,7 @@ private static extern IntPtr get_map_y1();
 	{
 		// Create a texture
 		Texture2D tex = new Texture2D(width,height,TextureFormat.ARGB32,false);
-		tex.wrapMode = TextureWrapMode.Clamp;
+		tex.wrapMode = TextureWrapMode.Repeat;
 		// Set point filtering just so we can see the pixels clearly
 		tex.filterMode = FilterMode.Bilinear;
 		// Call Apply() so it's actually uploaded to the GPU

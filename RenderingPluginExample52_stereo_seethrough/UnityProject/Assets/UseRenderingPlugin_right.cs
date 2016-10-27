@@ -126,7 +126,7 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 	{
 		// Create a texture
 		Texture2D tex = new Texture2D(960,1080,TextureFormat.ARGB32,false);
-		tex.wrapMode = TextureWrapMode.Clamp;
+		tex.wrapMode = TextureWrapMode.Repeat;
 		// Set point filtering just so we can see the pixels clearly
 		tex.filterMode = FilterMode.Bilinear;
 		// Call Apply() so it's actually uploaded to the GPU
