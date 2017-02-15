@@ -34,7 +34,7 @@
        	//why??? a 0.5 offset????
        	//float2 offset = float2(0.5/960.0, 0.5/1080.0);
        	//the right texture have (0,0) in the buttom left while the left have in the top left. so it's flipped here
-       //	coord.rg.x =  1.0 - coord.rg.x;
+//       	coord.rg.x =  1.0 - coord.rg.x;
        	half4 c = tex2D(_MainTex, coord);
     	//half4 c = half4(1.0,0.0,0.0,1.0);
         return c;

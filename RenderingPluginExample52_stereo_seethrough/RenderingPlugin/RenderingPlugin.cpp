@@ -71,6 +71,20 @@ extern "C" void UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetTimeFromUnity (flo
 
 VideoSource* video_cap_ptr;
 
+#ifdef VIDEO_INPUT_LIB
+extern "C" bool UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API OpenCamera()
+{
+	video_cap_ptr = new VideoSource();
+	if (video_cap_ptr->read_calib() && video_cap_ptr->open_camera())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+#else
 extern "C" bool UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API OpenWebCam(int index_0, int index_1)
 {
 	video_cap_ptr = new VideoSource();
@@ -82,8 +96,8 @@ extern "C" bool UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API OpenWebCam(int index_
 	{
 		return false;
 	}
-
 }
+#endif
 
 extern "C"  UNITY_INTERFACE_EXPORT float* get_map_x1()
 {
@@ -864,6 +878,7 @@ static void FillTextureFromCode (int width, int height, int stride, unsigned cha
 static void DoRendering (const float* worldMatrix, const float* identityMatrix, float* projectionMatrix, const MyVertex* verts, int index)
 {
 	cv::Mat src_rgba;
+
 	if (index == 0)
 	{
 		src_rgba = video_cap_ptr->get_left_rgba();
@@ -873,10 +888,10 @@ static void DoRendering (const float* worldMatrix, const float* identityMatrix, 
 		src_rgba = video_cap_ptr->get_right_rgba();
 	}
 
-	//cv::Mat left_right(src.rows, src.cols * 2, CV_8UC3);
-
-	//src.copyTo(left_right(cv::Rect(0,0, src.cols, src.rows)));
-	//src_right.copyTo(left_right(cv::Rect(src.cols, 0, src.cols, src.rows)));
+	if (src_rgba.empty())
+	{
+		return;
+	}
 
 	// Does actual rendering of a simple triangle
 

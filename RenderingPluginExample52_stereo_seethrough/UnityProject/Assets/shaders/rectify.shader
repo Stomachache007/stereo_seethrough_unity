@@ -33,7 +33,7 @@
        	float2 coord = tex2D (_Texture2, uv);
        	//why??? a 0.5 offset????
        	//float2 offset = float2(0.5/960.0, 0.5/1080.0);
-		//coord.rg.x =  1.0 - coord.rg.x;
+//		coord.rg.x =  1.0 - coord.rg.x;
        	half4 c = tex2D(_MainTex, coord);
        	//half4 c = half4(0.0,1.0,0.0,1.0);
         return c;

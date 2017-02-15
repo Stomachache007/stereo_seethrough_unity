@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 
 public class UseRenderingPlugin : MonoBehaviour
 {
+	public static event Action initSuccessEvent;
 	// Native plugin rendering events are only called if a plugin is used
 	// by some script. This means we have to DllImport at least
 	// one function in some active script.
@@ -31,7 +32,7 @@ public class UseRenderingPlugin : MonoBehaviour
 #else
 	[DllImport ("RenderingPlugin")]
 #endif
-	private static extern Boolean OpenWebCam(int index_0, int index_1);
+	private static extern Boolean OpenCamera();
 
 	//native function call for destroying web cam
 #if UNITY_IPHONE && !UNITY_EDITOR
@@ -89,7 +90,7 @@ private static extern IntPtr get_map_y1();
 
 	private GameObject StereoCamera;
 
-	private int width = 960;
+	private int width = 1080;
 	private int height = 1080;
 
 	private Texture2D texture;
@@ -103,7 +104,7 @@ private static extern IntPtr get_map_y1();
 	{
 		StereoCamera = GameObject.Find ("StereoCamera");
 
-		if (OpenWebCam (1, 0)) {
+		if (OpenCamera()) {
 			Debug.Log("init success!");
 
 			//making a new texture to shader
@@ -148,6 +149,10 @@ private static extern IntPtr get_map_y1();
 			init_success = true;
 
 			render_sc_right.enabled = true;
+
+			if (initSuccessEvent != null)
+				initSuccessEvent ();
+			
 		} else {
 			Debug.Log("init false");
 		}
@@ -156,6 +161,8 @@ private static extern IntPtr get_map_y1();
 
 		CreateTextureAndPassToPlugin();
 		yield return StartCoroutine("CallPluginAtEndOfFrames");
+
+
 	}
 
 	private void CreateTextureAndPassToPlugin()
@@ -185,7 +192,7 @@ private static extern IntPtr get_map_y1();
 
 //			StereoCamera.transform.Rotate(Vector3.up * 50f * Time.deltaTime);
 
-			float time1 = Time.realtimeSinceStartup;
+//			float time1 = Time.realtimeSinceStartup;
 
 			// Wait until all frame rendering is done
 			yield return new WaitForEndOfFrame();
@@ -199,9 +206,9 @@ private static extern IntPtr get_map_y1();
 			// For our simple plugin, it does not matter which ID we pass here.
 			GL.IssuePluginEvent(GetRenderEventFunc(), 0);
 
-			float time2 = Time.realtimeSinceStartup;
-			float interval = time2 - time1;
-			Debug.Log("time_left: "+interval*1000+"ms.");
+//			float time2 = Time.realtimeSinceStartup;
+//			float interval = time2 - time1;
+//			Debug.Log("time_left: "+interval*1000+"ms.");
         }
 	}
 

@@ -3,6 +3,14 @@
 #ifndef __VIDEOSOURCE_H
 #define __VIDEOSOURCE_H
 
+#define VIDEO_INPUT_LIB	1
+#if VIDEO_INPUT_LIB
+#endif
+
+#if VIDEO_INPUT_LIB
+#include "videoInput\videoInput.h"
+#endif
+
 #define OPENCV 1
 #if OPENCV
 #endif
@@ -15,12 +23,12 @@
 
 //image size for ar mod rendering
 //current PTAM-demo machine camera setup is flipped 90.
-#define OPENCV_VIDEO_W 960
+#define OPENCV_VIDEO_W 1080
 #define OPENCV_VIDEO_H 1080
 
 //image size for tracking, usually smaller for faster frame rate.
-#define TRACK_IMAGE_W 480
-#define TRACK_IMAGE_H 640
+#define TRACK_IMAGE_W 540
+#define TRACK_IMAGE_H 540
 
 //#define LOCAL_VIDEO
 #ifdef LOCAL_VIDEO
@@ -35,8 +43,14 @@ class VideoSource
 {
 public:
 	//members
+#ifdef VIDEO_INPUT_LIB
+	videoInput VI;
+	int left_index;
+	int right_index;
+#else
 	cv::VideoCapture cap;
 	cv::VideoCapture cap_right;
+#endif
 
 	cv::Mat src;
 	cv::Mat src_right;
@@ -57,7 +71,12 @@ public:
 
 	//public functions
 	VideoSource();
+#ifdef VIDEO_INPUT_LIB
+	bool open_camera();
+#else
 	bool open_webcam(int index_0, int index_1);
+#endif
+	bool open_webcam_mono();
 	bool read_calib();
 	~VideoSource();
 	cv::Mat get_left_rgba();

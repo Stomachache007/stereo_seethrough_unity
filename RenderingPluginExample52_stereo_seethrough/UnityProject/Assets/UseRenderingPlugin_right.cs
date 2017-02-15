@@ -61,7 +61,7 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 	#endif
 	private static extern IntPtr get_map_y2();
 
-	private int width = 960;
+	private int width = 1080;
 	private int height = 1080;
 	
 	private Texture2D texture;
@@ -70,13 +70,8 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 
 	public UseRenderingPlugin render_sc_left;
 
-
-	// Use this for initialization
-	IEnumerator Start () {
-
-		Debug.Log("left init "+render_sc_left.init_success); 
-
-		if (render_sc_left.init_success) {
+	void OnInitSuccessEvent()
+	{
 			texture = new Texture2D (width, height, TextureFormat.RGFloat, false);
 			Material mat = GetComponent<Renderer> ().material;
 			mat.SetTexture ("_Texture2", texture);
@@ -86,7 +81,7 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 			//		
 			IntPtr ptr = get_map_x2 ();
 			Marshal.Copy (ptr, map_x2, 0, width * height);
-		
+
 			ptr = get_map_y2 ();
 			Marshal.Copy (ptr, map_y2, 0, width * height);
 
@@ -113,7 +108,17 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 			}
 
 			texture.Apply ();
-		}
+
+	}
+
+	void Awake()
+	{
+		UseRenderingPlugin.initSuccessEvent += OnInitSuccessEvent;
+	}
+
+
+	// Use this for initialization
+	IEnumerator Start () {
 
 		SetUnityStreamingAssetsPath(Application.streamingAssetsPath);
 
@@ -125,7 +130,7 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 	private void CreateTextureAndPassToPlugin()
 	{
 		// Create a texture
-		Texture2D tex = new Texture2D(960,1080,TextureFormat.ARGB32,false);
+		Texture2D tex = new Texture2D(width,height,TextureFormat.ARGB32,false);
 		tex.wrapMode = TextureWrapMode.Repeat;
 		// Set point filtering just so we can see the pixels clearly
 		tex.filterMode = FilterMode.Bilinear;
@@ -151,7 +156,7 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 	private IEnumerator CallPluginAtEndOfFrames()
 	{
 		while (true) {
-			float time1 = Time.realtimeSinceStartup;
+//			float time1 = Time.realtimeSinceStartup;
 			
 			// Wait until all frame rendering is done
 			yield return new WaitForEndOfFrame();
@@ -165,9 +170,9 @@ public class UseRenderingPlugin_right : MonoBehaviour {
 			// For our simple plugin, it does not matter which ID we pass here.
 			GL.IssuePluginEvent(GetRenderEventFunc(), 1);
 			
-			float time2 = Time.realtimeSinceStartup;
-			float interval = time2 - time1;
-			Debug.Log("time_right: "+interval*1000+"ms.");
+//			float time2 = Time.realtimeSinceStartup;
+//			float interval = time2 - time1;
+//			Debug.Log("time_right: "+interval*1000+"ms.");
 		}
 	}
 
